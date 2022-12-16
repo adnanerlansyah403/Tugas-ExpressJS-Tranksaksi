@@ -1,15 +1,15 @@
 import controller from "../controllers/auth.controller.js";
 import verifySignUp from './../middleware/verifySignUp.js';
 
-const Auth = (application) => {
-    application.use(function(req, res, next) {
+const Auth = (app) => {
+    app.use(function(req, res, next) {
         res.header(
             "Access-Control-Allow-Header",
             "x-access-token, Origin, Content-Type, Accept"
         );
         next();
     })
-    application.post(
+    app.post(
         "/api/auth/signup",
         [
             verifySignUp.checkDuplicateUsernameOrEmail,
@@ -18,7 +18,7 @@ const Auth = (application) => {
         controller.signup
     )
 
-    application.post("/api/auth/signin", controller.signin);
+    app.post("/api/auth/signin", controller.signin);
 }
 
 export default Auth;

@@ -36,14 +36,12 @@ const signup = (req, res) => {
     });
 } 
 
-const signin = async (req, res) => {
- 
-    await db.user.findOne({
+const signin = (req, res) => {
+    db.user.findOne({
         where: {
-            username: req.body.username
+            email: req.body.email
         }
-    })
-    .then(user => {
+    }).then(user => {
         if(!user) {
             return res.status(404).send({
                 message: "User not found!"
@@ -88,7 +86,7 @@ const signin = async (req, res) => {
     })
 }
 
-export default {
+export default { 
     signup,
     signin
 }

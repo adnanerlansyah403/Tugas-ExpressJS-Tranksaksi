@@ -1,8 +1,8 @@
 const HOST = "localhost";
-const USER = "root";
-const PASSWORD = "";
-const DB = "expressauthentication";
-const dialect = "mysql";
+const USER = "postgres";
+const PASSWORD = "postgres";
+const DB = "auth-jwt";
+const dialect = "postgres";
 const pool = {
     max: 5,
     min: 0,

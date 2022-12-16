@@ -2,21 +2,19 @@ import config from "../config/db.config.js";
 import { Sequelize } from 'sequelize';
 import User from "../models/user.model.js";
 import Role from "../models/role.model.js";
+import Customer from "../models/customer.model.js";
 
 
 const sequelize = new Sequelize(
-    "auth-jwt",
-    "postgres",
-    "postgres",
+    config.DB,
+    config.USER,
+    config.PASSWORD,
     {
-      host: "localhost",
-      dialect: "postgres",
-      pool: {
-        max: 9,
-        min: 0,
-        idle: 10000
-      },
-});
+      host: config.HOST,
+      dialect: config.dialect,
+      pool: config.pool,
+      operatorAllieases: false
+  });
 
 const db = {};
 
@@ -25,6 +23,7 @@ db.sequelize = sequelize;
 
 db.user = User(sequelize, Sequelize);
 db.role = Role(sequelize, Sequelize);
+db.customer = Customer(sequelize, Sequelize);
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",
