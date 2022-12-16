@@ -15,7 +15,7 @@ function Customer(app) {
         controller.index
     )
     
-    app.get("/api/customers/:id", 
+    app.get("/api/customers/:id/show", 
         [authJwt.verifyToken],
         controller.show
     )
@@ -30,7 +30,7 @@ function Customer(app) {
         controller.update
     )
     
-    app.get("/api/customers/:id",
+    app.get("/api/customers/:id/destroy",
         [authJwt.verifyToken], 
         controller.destroy
     )
