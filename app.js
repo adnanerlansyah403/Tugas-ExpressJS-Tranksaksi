@@ -2,7 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import pkg from 'body-parser';
 import bodyParser from 'body-parser';
-
+import Auth from "./app/routes/auth.routes.js";
+import User from "./app/routes/user.routes.js";
 
 const app = express();
 const { json, urlencoded } = pkg;
@@ -22,8 +23,7 @@ app.use(bodyParser.json());
 // parse requests of content-type - app/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
-import Auth from "./app/routes/auth.routes.js";
-import User from "./app/routes/user.routes.js";
+
 
 // simple route
 app.get("/", (req, res) => {
