@@ -5,14 +5,17 @@ import Role from "../models/role.model.js";
 
 
 const sequelize = new Sequelize(
-    config.DATABASENAME,
-    config.USER,
-    config.PASSWORD,
+    "auth-jwt",
+    "postgres",
+    "postgres",
     {
-      host: config.HOST,
-      dialect: config.dialect,
-      pool: config.pool,
-      logging: false
+      host: "localhost",
+      dialect: "postgres",
+      pool: {
+        max: 9,
+        min: 0,
+        idle: 10000
+      },
 });
 
 const db = {};

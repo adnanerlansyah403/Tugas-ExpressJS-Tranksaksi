@@ -1,8 +1,7 @@
 const HOST = "localhost";
-const PORT = 3306;
 const USER = "root";
 const PASSWORD = "";
-const DATABASENAME = "expressauthentication";
+const DB = "expressauthentication";
 const dialect = "mysql";
 const pool = {
     max: 5,
@@ -12,9 +11,8 @@ const pool = {
 };
 
 export default {
-    DATABASENAME,
+    DB,
     HOST,
-    PORT,
     USER,
     PASSWORD,
     dialect,
