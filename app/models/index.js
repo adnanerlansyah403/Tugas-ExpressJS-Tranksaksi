@@ -3,18 +3,13 @@ import { Sequelize } from 'sequelize';
 import User from "../models/user.model.js";
 import Role from "../models/role.model.js";
 import Customer from "../models/customer.model.js";
+import Order from "../models/order.model.js";
+import Product from "../models/product.model.js";
 
 
-const sequelize = new Sequelize(
-    config.DB,
-    config.USER,
-    config.PASSWORD,
-    {
-      host: config.HOST,
-      dialect: config.dialect,
-      pool: config.pool,
-      operatorAllieases: false
-  });
+const sequelize = new Sequelize('far-express', 'postgres', 'postgres', {
+  host: 'localhost',
+  dialect: 'postgres'});
 
 const db = {};
 
@@ -24,6 +19,10 @@ db.sequelize = sequelize;
 db.user = User(sequelize, Sequelize);
 db.role = Role(sequelize, Sequelize);
 db.customer = Customer(sequelize, Sequelize);
+db.order = Order(sequelize, Sequelize);
+db.product = Product(sequelize, Sequelize);
+
+// Relationships
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",
@@ -35,6 +34,21 @@ db.user.belongsToMany(db.role, {
   foreignKey: "userId",
   otherKey: "roleId"
 });
+
+db.product.belongsToMany(db.customer, {
+  through: "orders",
+  foreignKey: "productId",
+  otherKey: "customerId"
+}) 
+db.customer.belongsToMany(db.product, {
+  through: "orders",
+  foreignKey: "customerId",
+  otherKey: "productId"
+})
+
+
+
+
 
 db.ROLES = ["user", "admin", "moderator"];
 

@@ -1,7 +1,7 @@
 const HOST = "localhost";
 const USER = "postgres";
 const PASSWORD = "postgres";
-const DB = "auth-jwt";
+const DB = "far-express";
 const dialect = "postgres";
 const pool = {
     max: 5,
