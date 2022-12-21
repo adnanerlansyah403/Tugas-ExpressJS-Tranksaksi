@@ -9,6 +9,9 @@ export default (sequelize, dataType) => {
         },
         password: {
             type: dataType.STRING
+        },
+        customerId: {
+            type: dataType.INTEGER
         }
     })
 

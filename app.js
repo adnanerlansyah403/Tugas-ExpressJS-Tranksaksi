@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 import Auth from "./app/routes/auth.routes.js";
 import User from "./app/routes/user.routes.js";
 import Customer from "./app/routes/customer.routes.js";
+import Product from './app/routes/product.routes.js';
 
 const app = express();
 const { json, urlencoded } = pkg;
@@ -33,10 +34,11 @@ app.get("/", (req, res) => {
 const user = User(app);
 const auth = Auth(app);
 const customer = Customer(app);
+const product = Product(app);
 
 // set port, listen for requests
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });

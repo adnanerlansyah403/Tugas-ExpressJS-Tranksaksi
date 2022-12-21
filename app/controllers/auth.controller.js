@@ -39,7 +39,7 @@ const signup = (req, res) => {
 const signin = (req, res) => {
     db.user.findOne({
         where: {
-            email: req.body.email
+            username: req.body.username
         }
     }).then(user => {
         if(!user) {

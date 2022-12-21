@@ -2,6 +2,7 @@ import db from "../models/index.js";
 
 const checkDuplicateUsernameOrEmail = (req, res, next) => {
     // Username
+    console.log(req);
     db.user.findOne({
         where: {
             username: req.body.username
