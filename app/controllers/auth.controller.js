@@ -5,35 +5,51 @@ import bcrypt from "bcryptjs";
 
 const Op = db.Sequelize.Op;
 
-const signup = (req, res) => {
+const signup = async (req, res) => {
     // Save User to Database
-    db.user.create({
-        username: req.body.username,
-        email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 8)
-    }).then(user => {
-        if (req.body.roles) {
-        db.role.findAll({
-            where: {
-                name: {
-                    [Op.or]: req.body.roles
-                }
-            }
-        }).then(roles => {
-            user.setRoles(roles).then(() => {
-            res.send({ message: "User was registered successfully!" });
-            });
-        });
-        } else {
-        // user role = 1
-            user.setRoles([1]).then(() => {
-                res.send({ message: "User was registered successfully!" });
-            });
-        }
-    })
-    .catch(err => {
-        res.status(500).send({ message: err.message });
-    });
+    
+    const t = await db.sequelize.transaction();
+    try {
+        const user = await db.user.create({
+            username: req.body.username,
+            email: req.body.email,
+            password: bcrypt.hashSync(req.body.password, 8)
+        }, { transaction: t });
+
+        const customer = await db.customer.create({
+            telp: req.body.telp,
+            nik: req.body.nik,
+            alamat: req.body.alamat,
+            tanggal_lahir: req.body.tanggal_lahir,
+            jenis_kelamin: req.body.jenis_kelamin,
+            userId: user.id
+        }, { transaction: t })
+
+        await t.commit();
+
+        let token = jwt.sign({
+            id: user.id
+        }, config.secret, {
+            expiresIn: 86400 // 24 hours
+        })
+
+        return res.status(201).send({
+            success: true,
+            message: "Signup Successful",
+            data: [
+                {
+                    user,
+                    token
+                },
+                customer
+            ]
+        })
+    
+    } catch (error) {
+    
+        await t.rollback();
+        return res.status(500).send({ message: error.message });
+    }
 } 
 
 const signin = (req, res) => {

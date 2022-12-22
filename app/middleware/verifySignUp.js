@@ -2,15 +2,14 @@ import db from "../models/index.js";
 
 const checkDuplicateUsernameOrEmail = (req, res, next) => {
     // Username
-    console.log(req);
     db.user.findOne({
         where: {
             username: req.body.username
         }
     }).then(user => {
-        if(user) {
+        if(!user) {
             res.status(400).json({
-                message: "Failed!, Credentials does not match"
+                message: "Failed!, Credentials does not supported!"
             });
             return;
         }
@@ -20,11 +19,11 @@ const checkDuplicateUsernameOrEmail = (req, res, next) => {
                 email: req.body.email
               }
             }).then(user => {
-            if (user) {
-            res.status(400).send({
-                message: "Failed! Credentials does not match!"
-            });
-            return;
+            if (!user) {
+                res.status(400).send({
+                    message: "Failed!, Credentials does not supported!"
+                });
+                return;
             }
         
             next();

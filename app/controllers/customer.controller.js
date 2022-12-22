@@ -1,4 +1,5 @@
 import db from "../models/index.js"
+import bcrypt from 'bcryptjs';
 
 async function index(req, res) {
     
@@ -38,72 +39,80 @@ async function show(req, res) {
 
 }
 
-async function store(req, res) {
-    
-    await db.customer.create({
-        name: req.body.name,
-        email: req.body.email,
-        telp: req.body.telp,
-        nik: req.body.nik,
-        alamat: req.body.alamat
-    })
-    .then(customer => {
-        return res.status(200).json({
-            status: true,
-            message: "Successfully create a new customer",
-            customer: customer
-        })
-    })
-
-
-}
-
 async function update(req, res) {
+    
+    const t = await db.sequelize.transaction();
 
+    try {
 
-    await db.customer.update(
-        {
-            name: req.body.name,
-            email: req.body.email,
-            telp: req.body.telp,
-            nik: req.body.nik,
-            alamat: req.body.email
-        },
-        {
+        const user = await db.user.update(
+            {
+                "username": req.body.username,
+                "email": req.body.email,
+                "password": req.body.password != null && bcrypt.hashSync(req.body.password, 10),
+            },
+            {
             where: {
                 id: req.params.id
-            }
-        }
-    )
-    .then(id => {
-        let customer = db.customer.findOne({
+            }    
+        }, { transaction: t });
+
+        const customer = await db.customer.update(
+            {
+                "telp": req.body.telp,
+                "nik": req.body.nik,
+                "alamat": req.body.alamat,
+                "jenis_kelamin": req.body.jenis_kelamin,
+                "userId": user.id
+            },
+            {
             where: {
-                id: id
-            }
+                id: req.params.id
+            }    
+        }, { transaction: t });
+
+        await t.commit();
+
+        return res.status(200).send({
+            success: true,
+            message: "Successfully updated the customer",
+            data: null
         })
-        return res.status(200).json({
-            status: true,
-            message: "Update user successfully",
-            customer: customer
-        })
-    })
+    
+    } catch (error) {
+    
+        await t.rollback();
+        return res.status(500).send({ message: error.message });
+    }
 
 
 }
 
 async function destroy(req, res) {
+    
+    const t = await db.sequelize.transaction();
+    
+    try {
 
-    let customer = await db.customer.destroy({
-        where: {
-            id: req.params.id
-        }
-    }).then(customer => {
-        return res.status(200).json({
-            status: true,
-            message: "Succesfully delete a customer",
-            customer: customer
+        const user = await db.user.destroy({
+            where: {
+                id: req.params.id
+            }    
+        }, { transaction: t });
+
+        await t.commit();
+
+        return res.status(201).send({
+            success: true,
+            message: "Successfully deleted the customer",
+            data: null
         })
-    });
+    
+    } catch (error) {
+    
+        await t.rollback();
+        return res.status(500).send({ message: error.message });
+    }
 
 
 }
@@ -111,7 +120,6 @@ async function destroy(req, res) {
 export default {
     index,
     show,
-    store,
     update,
     destroy
 }

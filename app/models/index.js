@@ -51,8 +51,14 @@ db.product.belongsToMany(db.customer, {
   onUpdate: 'CASCADE'
 }) 
 
-db.customer.belongsTo(db.user);
-db.user.hasOne(db.customer);
+db.user.hasOne(db.customer, {
+  onUpdate: 'CASCADE',
+  onDelete: 'CASCADE'
+});
+db.customer.belongsTo(db.user, {
+  onUpdate: 'CASCADE',
+  onDelete: 'CASCADE'
+});
 
 
 db.ROLES = ["user", "admin", "moderator"];
@@ -144,6 +150,8 @@ function createCustomer() {
       telp: 81957440893,
       nik: 62182913193,
       alamat: "Kp. Harapan Baru RT 01/ RW 09",
+      tanggal_lahir: "2003-03-27",
+      jenis_kelamin: "L",
       userId: 1,
       createdAt: new Date(),
       updatedAt: new Date()
@@ -152,6 +160,8 @@ function createCustomer() {
       telp: 87748310753,
       nik: 62138132182,
       alamat: "Jl. Ki Haji No. 4, Cikampek",
+      tanggal_lahir: "2000-03-27",
+      jenis_kelamin: "L",
       userId: 2,
       createdAt: new Date(),
       updatedAt: new Date()
@@ -160,6 +170,8 @@ function createCustomer() {
       telp: 84712323189,
       nik: 62132183218,
       alamat: "Jl. Cisitu Indah No. 16, Bandung",
+      tanggal_lahir: "2001-03-27",
+      jenis_kelamin: "L",
       userId: 3,
       createdAt: new Date(),
       updatedAt: new Date()

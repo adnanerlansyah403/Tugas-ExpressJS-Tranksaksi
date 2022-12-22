@@ -6,6 +6,7 @@ import Auth from "./app/routes/auth.routes.js";
 import User from "./app/routes/user.routes.js";
 import Customer from "./app/routes/customer.routes.js";
 import Product from './app/routes/product.routes.js';
+import Order from './app/routes/order.routes.js';
 
 const app = express();
 const { json, urlencoded } = pkg;
@@ -23,7 +24,7 @@ app.use(json());
 app.use(urlencoded({ extended: true }));
 
 
-
+ 
 // simple route
 app.get("/", (req, res) => {
     res.json({ message: "Hello World!" });
@@ -35,6 +36,7 @@ const user = User(app);
 const auth = Auth(app);
 const customer = Customer(app);
 const product = Product(app);
+const order = Order(app);
 
 // set port, listen for requests
 

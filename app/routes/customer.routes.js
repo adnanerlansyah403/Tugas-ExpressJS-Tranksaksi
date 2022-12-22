@@ -20,17 +20,12 @@ function Customer(app) {
         controller.show
     )
     
-    app.post("/api/customers", 
-        [authJwt.verifyToken],
-        controller.store
-    )
-    
     app.post("/api/customers/:id/update", 
         [authJwt.verifyToken],
         controller.update
     )
     
-    app.get("/api/customers/:id/destroy",
+    app.post("/api/customers/:id/destroy",
         [authJwt.verifyToken], 
         controller.destroy
     )

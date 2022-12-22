@@ -1,7 +1,7 @@
-import controller from "../controllers/product.controller.js"
+import controller from "../controllers/order.controller.js"
 import authJwt from "../middleware/authJwt.js" 
 
-function Product(app) {
+function Order(app) {
     app.use(function (req, res, next) {
         res.header(
             "Access-Control-Allow-Headers",
@@ -10,30 +10,30 @@ function Product(app) {
         next()
     });
 
-    app.get("/api/products", 
+    app.get("/api/orders", 
         [authJwt.verifyToken],
         controller.index
     )
     
-    app.get("/api/products/:id/show", 
+    app.get("/api/orders/:id/show", 
         [authJwt.verifyToken],
         controller.show
     )
     
-    app.post("/api/products", 
+    app.post("/api/orders", 
         [authJwt.verifyToken],
         controller.store
     )
     
-    app.post("/api/products/:id/update", 
+    app.post("/api/orders/:id/update", 
         [authJwt.verifyToken],
         controller.update
     )
     
-    app.post("/api/products/:id/destroy",
+    app.post("/api/orders/:id/destroy",
         [authJwt.verifyToken], 
         controller.destroy
     )
 }
 
-export default Product
+export default Order
